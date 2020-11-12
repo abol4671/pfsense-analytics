@@ -1,0 +1,10 @@
+sudo docker container ls
+sudo docker-compose ps
+sudo docker logs --follow <containerName>
+sudo docker inspect <containerName>
+sudo docker-compose up -d
+sudo docker-compose down
+sudo docker-compose up -d --no-deps --build graylog    (build GeoIP database?)
+sudo docker stop <containerName>
+sudo docker start <containerName>
+sudo docker volume ls
