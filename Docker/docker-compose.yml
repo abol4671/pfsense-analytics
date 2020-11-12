@@ -4,19 +4,25 @@ services:
 
   # MongoDB: https://hub.docker.com/_/mongo/
   mongodb:
-    image: mongo:3
+    image: mongo
+    restart: always
+    env_file:
+      - ./time.env
     volumes:
       - mongo_data:/data/db
 
   # Elasticsearch: https://www.elastic.co/guide/en/elasticsearch/reference/6.x/docker.html
   elasticsearch:
-    image: docker.elastic.co/elasticsearch/elasticsearch-oss:6.8.5
+    #image: leydifall/rpi-elasticsearch:latest
+    image: karlhendrik/elasticsearch:6.8.2
+    restart: always
     mem_limit: 4g
     restart: always
     volumes:
       - es_data:/usr/share/elasticsearch/data
     env_file:
       - ./elasticsearch.env
+      - ./time.env
     ulimits:
       memlock:
         soft: -1
@@ -26,13 +32,15 @@ services:
 
   # Graylog: https://hub.docker.com/r/graylog/graylog/
   graylog:
-    build: 
+    build:
       context: ./graylog/.
+    restart: always
     volumes:
       - graylog_journal:/usr/share/graylog/data/journal
       - ./graylog/service-names-port-numbers.csv:/etc/graylog/server/service-names-port-numbers.csv
     env_file:
       - ./graylog.env
+      - ./time.env
     links:
       - mongodb:mongo
       - elasticsearch
@@ -57,15 +65,22 @@ services:
 
   # Kibana : https://www.elastic.co/guide/en/kibana/6.8/index.html
   kibana:
-    image: docker.elastic.co/kibana/kibana-oss:6.8.5
+    image: gagara/kibana-oss-arm64
+    restart: always
     env_file:
-      - kibana.env
+      - ./kibana.env
+      - ./time.env
     depends_on:
       - elasticsearch
     ports:
       - 5601:5601
+
   cerebro:
-    image: lmenezes/cerebro
+    #image: jessestuart/cerebro:latest
+    image: russellsherman/cerebro:0.8.1
+    restart: always
+    env_file:
+      - ./time.env
     ports:
       - 9001:9000
     links:
@@ -79,8 +94,10 @@ services:
 
   influxdb:
     image: 'influxdb:latest'
+    restart: always
     env_file:
       - ./influxdb.env
+      - ./time.env
     ports:
       - 8086:8086
     volumes:
@@ -92,8 +109,10 @@ services:
 
   grafana:
     image: grafana/grafana:latest
+    restart: always
     env_file:
       - ./grafana.env
+      - ./time.env
     ports:
       - 3000:3000
     volumes:
