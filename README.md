@@ -1,3 +1,5 @@
+Updated to work on a Raspberry Pi 4 4GB using docker on Ubuntu (64bit).
+
 This Project aims to give you better insight of what's going on your pfSense Firewall. It's based on some heavylifting alrerady done by devopstales and opc40772. Since it still was a bit clumsy and outdated I wrapped some docker-compose glue around it, to make it a little bit easier to get up and running. It should work hasslefree with a current Linux that has docker and docker-compose. Thanks as well to MatthewJSalerno for some Streamlining of the Graylog provisioning Process.
 
 If it's easier for you, you can find a video guide here:  https://youtu.be/uOfPzueH6MA
@@ -138,7 +140,7 @@ We can take it from the Git directory or sideload it from github to the Workstat
 
 https://raw.githubusercontent.com/lephisto/pfsense-analytics/master/pfsense_content_pack/graylog3/pfanalytics.json
 
-Once it's uploaded, press the Install button. If everthing went well it should look like:
+Once it's uploaded, press the Install button (If you get an error Go To System -> Grok Patterns and filter for COMMONAPACHELOG and delete. Try installing again.). If everthing went well it should look like:
 
 ![dpi1](https://raw.githubusercontent.com/lephisto/pfsense-analytics/master/screenshots/contentpack.png)
 
@@ -214,6 +216,7 @@ Dashboards and Datasource are auto-provisioned to Grafana. Log in at http://loca
 Now that we have the Firewall logs we want to get some Intel about legit Traffic on our Network.
 
 - On your pfSense go to System->Package Manager->Available Packages and install ntopng.
+- Head to Diagnostics -> ntopng settings, Under Utilities set GeoLite2 DB License Key.
 - Head to Diagnostics -> ntopng Settings and do basic Configuration
 - Update GeoIP Data there as well. (Install "PFSENSE-9211: Fix GeoIP DB" if it fails)
 - Go to Diagnostics -> ntopng Settings and log in to ntopng
