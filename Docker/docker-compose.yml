@@ -17,7 +17,6 @@ services:
     image: karlhendrik/elasticsearch:6.8.2
     restart: always
     mem_limit: 4g
-    restart: always
     volumes:
       - es_data:/usr/share/elasticsearch/data
     env_file:
